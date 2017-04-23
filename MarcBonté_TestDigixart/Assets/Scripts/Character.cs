@@ -9,7 +9,7 @@ public class Character : MonoBehaviour
     {
         GetClosestInteractiveAmongInteractives();
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.A))
         {
             Interact();
         }

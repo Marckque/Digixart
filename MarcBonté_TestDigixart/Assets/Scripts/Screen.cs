@@ -40,4 +40,10 @@ public class Screen : Interactive
         m_LinkedCamera.enabled = m_ScreenIsOn ? m_TurnedOnScreen : m_TurnedOffScreen;
         m_ScreenMeshRenderer.material = m_ScreenIsOn ? m_TurnedOnScreen : m_TurnedOffScreen;
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(transform.position, m_LinkedRotatableWithAttachableClue.transform.position);
+    }
 }

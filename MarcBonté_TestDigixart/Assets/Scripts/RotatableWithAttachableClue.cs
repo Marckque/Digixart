@@ -5,18 +5,30 @@ using UnityEngine;
 public class RotatableWithAttachableClue : Rotatable
 {
     [Header("Linked clue"), SerializeField]
-    private Transform m_LinkedClue;
+    private Clue m_LinkedClue;
+    private bool m_HasLinkedClue;
 
     public void AttachClueToRotator()
     {
         m_LinkedClue.transform.SetParent(transform);
+        m_HasLinkedClue = true;
     }
 
     public void DetachClueFromRotator()
     {
-        if (!IsLinkedToDeathZone)
+        m_LinkedClue.transform.SetParent(transform.root);
+        m_HasLinkedClue = false;
+    }
+
+    protected override void CheckStatus()
+    {
+        if (Mathf.Approximately(transform.eulerAngles.y, 180f) && m_HasLinkedClue)
         {
-            m_LinkedClue.transform.SetParent(transform.root);
+            IsLinkedToDeathZone = true;
+        }
+        else
+        {
+            IsLinkedToDeathZone = false;   
         }
     }
 }

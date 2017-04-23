@@ -14,9 +14,9 @@ public class Rotatable : Interactive
     private int rotationAmount = 1;
     private float[] rotations = new float[5];
     private Vector3 nextRotation;
-    public bool IsRotating { get; private set; }
+    public bool IsRotating { get; set; }
 
-    public bool IsLinkedToDeathZone { get; private set; }
+    public bool IsLinkedToDeathZone { get; set; }
 
     protected void Start()
     {
@@ -68,10 +68,25 @@ public class Rotatable : Interactive
             {
                 IsRotating = false;
                 transform.eulerAngles = nextRotation;
+
+                CheckStatus();
+
                 yield break;
             }
 
             yield return new WaitForEndOfFrame();
+        }
+    }
+
+    protected virtual void CheckStatus()
+    {
+        if (Mathf.Approximately(transform.eulerAngles.y, 180f))
+        {
+            IsLinkedToDeathZone = true;
+        }
+        else
+        {
+            IsLinkedToDeathZone = false;
         }
     }
 }
