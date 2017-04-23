@@ -68,7 +68,7 @@ public class Rotatable : Interactive
             {
                 IsRotating = false;
                 transform.eulerAngles = nextRotation;
-                DisplayInteraction();
+                //DisplayInteraction();
 
                 yield break;
             }
