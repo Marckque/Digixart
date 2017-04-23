@@ -8,14 +8,15 @@ public class Rotatable : Interactive
 {
     private const float ROTATION_LERP_OFFSET = 1f;
 
-    [SerializeField, Range(0f, 40f)]
-    private float m_RotationSpeed = 10f;
+    [Header("Rotations"), SerializeField, Range(0f, 40f)]
+    private float m_RotationSpeed = 5f;
     [SerializeField, Range(0, 4), Tooltip("0: 0°          1: 90°          2: 180°          3: 270°          4: 360°")]
-    private int rotationAmount;
+    private int rotationAmount = 1;
     private float[] rotations = new float[5];
     private Vector3 nextRotation;
     public bool IsRotating { get; private set; }
-    public GameObject isSelected;
+
+    public bool IsLinkedToDeathZone { get; private set; }
 
     protected void Start()
     {
@@ -45,20 +46,19 @@ public class Rotatable : Interactive
         StartCoroutine(RotateSelf());
     }
 
-    public override void ActivateInteraction()
+    public override void PlayerInteracts()
     {
-        base.ActivateInteraction();
+        base.PlayerInteracts();
 
         if (!IsRotating)
         {
             InitialiseRotation();
-
         }
     }
 
     private IEnumerator RotateSelf()
     {
-        HideInteraction();
+        HideInteractionFeedback();
 
         while (IsRotating)
         {
@@ -68,32 +68,10 @@ public class Rotatable : Interactive
             {
                 IsRotating = false;
                 transform.eulerAngles = nextRotation;
-                //DisplayInteraction();
-
                 yield break;
             }
 
             yield return new WaitForEndOfFrame();
-        }
-    }
-
-    protected void OnTriggerEnter(Collider other)
-    {
-        Character character = other.GetComponent<Character>();
-        
-        if (character)
-        {
-            character.AddInteractive(this);
-        } 
-    }
-
-    protected void OnTriggerExit(Collider other)
-    {
-        Character character = other.GetComponent<Character>();
-
-        if (character)
-        {
-            character.RemoveInteractive(this);
         }
     }
 }

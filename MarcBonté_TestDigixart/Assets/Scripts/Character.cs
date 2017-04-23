@@ -19,7 +19,7 @@ public class Character : MonoBehaviour
     {
         if (CurrentInteractive)
         {
-            CurrentInteractive.ActivateInteraction();
+            CurrentInteractive.PlayerInteracts();
         }
     }
 
@@ -37,7 +37,7 @@ public class Character : MonoBehaviour
         {
             if (a_Interactive == CurrentInteractive)
             {
-                CurrentInteractive.HideInteraction();
+                CurrentInteractive.HideInteractionFeedback();
                 CurrentInteractive = null;
             }
 
@@ -53,7 +53,7 @@ public class Character : MonoBehaviour
 
             foreach (Interactive interactive in m_Interactives)
             {
-                interactive.HideInteraction();
+                interactive.HideInteractionFeedback();
                 float distance = (interactive.transform.position - transform.position).sqrMagnitude;
 
                 if (distance < closestInteractive)
@@ -64,9 +64,16 @@ public class Character : MonoBehaviour
             }
 
             Rotatable r = CurrentInteractive as Rotatable;
-            if (!r.IsRotating)
+            if (r)
             {
-                CurrentInteractive.DisplayInteraction();
+                if (!r.IsRotating)
+                {
+                    CurrentInteractive.DisplayInteractionFeedback();
+                }
+            }
+            else
+            {
+                CurrentInteractive.DisplayInteractionFeedback();
             }
         }
     }
@@ -77,6 +84,26 @@ public class Character : MonoBehaviour
         {
             Gizmos.color = Color.green;
             Gizmos.DrawLine(transform.position, CurrentInteractive.transform.position);
+        }
+    }
+
+    protected void OnTriggerEnter(Collider other)
+    {
+        Interactive interactive = other.GetComponent<Interactive>();
+
+        if (interactive)
+        {
+            AddInteractive(interactive);
+        }
+    }
+
+    protected void OnTriggerExit(Collider other)
+    {
+        Interactive interactive = other.GetComponent<Interactive>();
+
+        if (interactive)
+        {
+            RemoveInteractive(interactive);
         }
     }
 }
