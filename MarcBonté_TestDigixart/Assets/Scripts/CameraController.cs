@@ -12,8 +12,29 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private Vector3 cameraOffset;
 
-	protected void Update()
+    [SerializeField, Range(-1f, 1f)]
+    private float dotAmount;
+    [SerializeField, Range(1f, 5f)]
+    private float speedMultiplier = 1f;
+
+    protected void Update()
     {
-        transform.position = Vector3.Lerp(transform.position, target.position + cameraOffset, speed * Time.deltaTime);
+        UpdateCameraPosition();
 	}
+
+    protected void OnValidate()
+    {
+        if (target)
+        {
+            transform.position = target.position + cameraOffset;
+        }
+    }
+
+    private void UpdateCameraPosition()
+    {
+        float dot = Vector3.Dot(target.forward.normalized, transform.forward.normalized);
+        float multiplier = dot > dotAmount ? 1f : speedMultiplier;
+
+        transform.position = Vector3.Lerp(transform.position, target.position + cameraOffset, (speed * multiplier) * Time.deltaTime);
+    }
 }

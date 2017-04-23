@@ -1,68 +1,82 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 public class Character : MonoBehaviour
 {
-    private const float NORMAL_MULTIPLIER = 2.5f;
-
-    [Range(0f, 20f)]
-    public float speed;
-    [Range(0f, 20f)]
-    public float lerpSpeed = 10f;
-    public Transform graphics;
-
-    [Range(0f, 0.5f)]
-    public float timer = 0.5f;
-    private float time;
-    private float angle;
-    private bool angleAdjustement;
-
-    protected void Start()
-    {
-        angle = transform.eulerAngles.z;
-    }
-
+    private List<Interactive> m_Interactives = new List<Interactive>();
+    public Interactive CurrentInteractive { get; private set; }
     protected void Update()
     {
-        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-        Vector3 movement = new Vector3(input.x, 0f, input.y);
-        transform.Translate(movement * speed * Time.deltaTime);
+        GetClosestInteractiveAmongInteractives();
 
-        if (!angleAdjustement)
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            graphics.transform.position = Vector3.Lerp(graphics.transform.position, transform.position, lerpSpeed * Time.deltaTime);
+            Interact();
         }
-        else
+    }
+
+    private void Interact()
+    {
+        if (CurrentInteractive)
         {
-            time += Time.deltaTime;
-            if (time > timer)
+            CurrentInteractive.ActivateInteraction();
+        }
+    }
+
+    public void AddInteractive(Interactive a_Interactive)
+    {
+        if (!m_Interactives.Contains(a_Interactive))
+        {
+            m_Interactives.Add(a_Interactive);
+        }
+    }
+
+    public void RemoveInteractive(Interactive a_Interactive)
+    {
+        if (m_Interactives.Contains(a_Interactive))
+        {
+            if (a_Interactive == CurrentInteractive)
             {
-                angleAdjustement = false;
+                CurrentInteractive.HideInteraction();
+                CurrentInteractive = null;
             }
+
+            m_Interactives.Remove(a_Interactive);
         }
+    }
 
-        if (movement != Vector3.zero)
+    private void GetClosestInteractiveAmongInteractives()
+    {
+        if (m_Interactives.Count > 0)
         {
-            Ray ray = new Ray(transform.position, -transform.up);
-            RaycastHit hit;
+            float closestInteractive = float.MaxValue;
 
-            if (Physics.Raycast(ray, out hit))
+            foreach (Interactive interactive in m_Interactives)
             {
-                Debug.DrawRay(ray.origin, ray.direction, Color.white);
+                interactive.HideInteraction();
+                float distance = (interactive.transform.position - transform.position).sqrMagnitude;
 
-                Vector3 normal = hit.normal;
-                Debug.DrawRay(hit.point, normal, Color.red);
-
-                transform.position = hit.point + (normal * NORMAL_MULTIPLIER);
-
-                float newAngle = hit.collider.transform.eulerAngles.z;
-                if (angle != newAngle)
+                if (distance < closestInteractive)
                 {
-                    transform.eulerAngles = new Vector3(0f, 0f, newAngle);
-                    angle = newAngle;
-                    angleAdjustement = true;
-                    time = 0f;
+                    closestInteractive = distance;
+                    CurrentInteractive = interactive;
                 }
             }
+
+            Rotatable r = CurrentInteractive as Rotatable;
+            if (!r.IsRotating)
+            {
+                CurrentInteractive.DisplayInteraction();
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (CurrentInteractive)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(transform.position, CurrentInteractive.transform.position);
         }
     }
 }
