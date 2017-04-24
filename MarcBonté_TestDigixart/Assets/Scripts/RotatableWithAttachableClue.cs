@@ -24,11 +24,11 @@ public class RotatableWithAttachableClue : Rotatable
     {
         if (Mathf.Approximately(transform.eulerAngles.y, 180f) && m_HasLinkedClue)
         {
-            IsLinkedToDeathZone = true;
+            TO_REMOVE = true;
         }
         else
         {
-            IsLinkedToDeathZone = false;   
+            TO_REMOVE = false;   
         }
     }
 }

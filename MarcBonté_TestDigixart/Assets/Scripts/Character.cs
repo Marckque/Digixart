@@ -3,15 +3,38 @@ using System.Collections.Generic;
 
 public class Character : MonoBehaviour
 {
+    private const float FORWARD_MULTIPLIER = 3f;
+
     private List<Interactive> m_Interactives = new List<Interactive>();
     public Interactive CurrentInteractive { get; private set; }
+
+    [SerializeField]
+    private float m_InteractionCooldownDuration = 1f;
+    private bool m_InteractionCooldown;
+    private float m_CooldownTime;
+
     protected void Update()
     {
         GetClosestInteractiveAmongInteractives();
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (m_InteractionCooldown)
         {
-            Interact();
+            if (Input.GetAxisRaw("A_1") > 0f || Input.GetKeyDown(KeyCode.A))
+            {
+                m_InteractionCooldown = false;
+                Interact();
+            }
+        } 
+
+        if (!m_InteractionCooldown)
+        {
+            m_CooldownTime += Time.deltaTime;
+
+            if (m_CooldownTime > m_InteractionCooldownDuration)
+            {
+                m_CooldownTime = 0f;
+                m_InteractionCooldown = true;
+            }
         }
     }
 
@@ -54,7 +77,7 @@ public class Character : MonoBehaviour
             foreach (Interactive interactive in m_Interactives)
             {
                 interactive.HideInteractionFeedback();
-                float distance = (interactive.transform.position - transform.position).sqrMagnitude;
+                float distance = ((interactive.transform.position - transform.position) - (transform.forward * FORWARD_MULTIPLIER)).sqrMagnitude;
 
                 if (distance < closestInteractive)
                 {
@@ -90,10 +113,15 @@ public class Character : MonoBehaviour
     protected void OnTriggerEnter(Collider other)
     {
         Interactive interactive = other.GetComponent<Interactive>();
-
         if (interactive)
         {
             AddInteractive(interactive);
+        }
+
+        SimpleTeleporter teleporter = other.GetComponent<SimpleTeleporter>();
+        if (teleporter)
+        {
+            transform.position = teleporter.ArrivalPoint.position;
         }
     }
 

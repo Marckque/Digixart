@@ -1,15 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class DeathZone : MonoBehaviour
+public class DeathZone : Interactive
 {
-    protected void OnTriggerEnter(Collider other)
+    public override void PlayerInteracts()
     {
-        Character character = other.GetComponent<Character>();
-
-        if (character)
-        {
-            SceneManager.LoadScene(0);
-        }
+        base.PlayerInteracts();
+        SceneManager.LoadScene(0);
     }
 }

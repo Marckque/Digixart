@@ -17,6 +17,9 @@ public class CameraController : MonoBehaviour
     [SerializeField, Range(1f, 5f)]
     private float speedMultiplier = 1f;
 
+
+    public float finalCameraOffsetZ;
+
     protected void Update()
     {
         UpdateCameraPosition();

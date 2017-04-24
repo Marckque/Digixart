@@ -15,12 +15,25 @@ public class Rotatable : Interactive
     private float[] rotations = new float[5];
     private Vector3 nextRotation;
     public bool IsRotating { get; set; }
+    public bool m_HasBeenRotatedOnce;
 
-    public bool IsLinkedToDeathZone { get; set; }
+    [Header("Linked to death zone"), SerializeField]
+    private bool m_IsBroken;
+    public bool TO_REMOVE { get; set; }
+
+    [Header("Boxes"), SerializeField]
+    private GameObject m_NormalBox;
+    [SerializeField]
+    private GameObject m_BrokenBox;
 
     protected void Start()
     {
         InitialiseRotations();
+
+        if (m_HasBeenRotatedOnce)
+        {
+            InitialiseRotation();
+        }
     }
 
     private void InitialiseRotations()
@@ -60,6 +73,11 @@ public class Rotatable : Interactive
     {
         HideInteractionFeedback();
 
+        if (m_IsBroken)
+        {
+            CheckStatus();
+        }
+
         while (IsRotating)
         {
             transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, nextRotation, m_RotationSpeed * Time.deltaTime);
@@ -68,8 +86,6 @@ public class Rotatable : Interactive
             {
                 IsRotating = false;
                 transform.eulerAngles = nextRotation;
-
-                CheckStatus();
 
                 yield break;
             }
@@ -80,13 +96,24 @@ public class Rotatable : Interactive
 
     protected virtual void CheckStatus()
     {
-        if (Mathf.Approximately(transform.eulerAngles.y, 180f))
+        if (Mathf.Approximately(nextRotation.y, 180f))
         {
-            IsLinkedToDeathZone = true;
+            TO_REMOVE = true;
         }
         else
         {
-            IsLinkedToDeathZone = false;
+            TO_REMOVE = false;
+        }
+
+        if (TO_REMOVE)
+        {
+            m_NormalBox.SetActive(false);
+            m_BrokenBox.SetActive(true);
+        }
+        else
+        {
+            m_NormalBox.SetActive(true);
+            m_BrokenBox.SetActive(false);
         }
     }
 }
