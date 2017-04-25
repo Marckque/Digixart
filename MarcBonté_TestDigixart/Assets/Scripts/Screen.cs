@@ -15,22 +15,10 @@ public class Screen : Interactive
     [Header("Camera"), SerializeField]
     private Camera m_LinkedCamera;
 
-    [Header("Linked rotatable"), SerializeField]
-    private RotatableWithAttachableClue m_LinkedRotatableWithAttachableClue;
-
     public override void PlayerInteracts()
     {
         base.PlayerInteracts();
         UpdateScreenStatus();
-        
-        if (m_ScreenIsOn)
-        {
-            m_LinkedRotatableWithAttachableClue.AttachClueToRotator();
-        }         
-        else
-        {
-            m_LinkedRotatableWithAttachableClue.DetachClueFromRotator();
-        }
     }
 
     private void UpdateScreenStatus()
@@ -39,11 +27,5 @@ public class Screen : Interactive
 
         m_LinkedCamera.enabled = m_ScreenIsOn ? m_TurnedOnScreen : m_TurnedOffScreen;
         m_ScreenMeshRenderer.material = m_ScreenIsOn ? m_TurnedOnScreen : m_TurnedOffScreen;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(transform.position, m_LinkedRotatableWithAttachableClue.transform.position);
     }
 }

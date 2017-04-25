@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 public class Character : MonoBehaviour
 {
-    private const float FORWARD_MULTIPLIER = 3f;
-
     private List<Interactive> m_Interactives = new List<Interactive>();
     public Interactive CurrentInteractive { get; private set; }
 
     [SerializeField]
     private float m_InteractionCooldownDuration = 1f;
+    [SerializeField, Range(0f, 3f)]
+    private float m_ForwardMultiplier = 1.25f;
+
     private bool m_InteractionCooldown;
     private float m_CooldownTime;
 
@@ -77,7 +78,7 @@ public class Character : MonoBehaviour
             foreach (Interactive interactive in m_Interactives)
             {
                 interactive.HideInteractionFeedback();
-                float distance = ((interactive.transform.position - transform.position) - (transform.forward * FORWARD_MULTIPLIER)).sqrMagnitude;
+                float distance = ((interactive.transform.position - transform.position) - (transform.forward * m_ForwardMultiplier)).sqrMagnitude;
 
                 if (distance < closestInteractive)
                 {

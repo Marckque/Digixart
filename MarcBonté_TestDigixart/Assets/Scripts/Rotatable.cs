@@ -9,30 +9,19 @@ public class Rotatable : Interactive
     private const float ROTATION_LERP_OFFSET = 1f;
 
     [Header("Rotations"), SerializeField, Range(0f, 40f)]
-    private float m_RotationSpeed = 5f;
+    protected float m_RotationSpeed = 5f;
     [SerializeField, Range(0, 4), Tooltip("0: 0°          1: 90°          2: 180°          3: 270°          4: 360°")]
-    private int rotationAmount = 1;
-    private float[] rotations = new float[5];
-    private Vector3 nextRotation;
+    protected int rotationAmount = 1;
+    protected float[] rotations = new float[5];
+    protected Vector3 nextRotation;
     public bool IsRotating { get; set; }
-    public bool m_HasBeenRotatedOnce;
-
-    [Header("Broken"), SerializeField]
-    private bool m_CanBeBroken;
-    public bool StateIsNormal { get; set; }
-    [SerializeField, Range(0, 4), Tooltip("0: 0°          1: 90°          2: 180°          3: 270°          4: 360°")]
-    private int brokenRotationAmount = 2;
-
-    [Header("Boxes"), SerializeField]
-    private GameObject m_NormalBox;
-    [SerializeField]
-    private GameObject m_BrokenBox;
+    public bool m_RotateOnceOnStart;
 
     protected void Start()
     {
         InitialiseRotations();
 
-        if (m_HasBeenRotatedOnce)
+        if (m_RotateOnceOnStart)
         {
             InitialiseRotation();
         }
@@ -57,7 +46,7 @@ public class Rotatable : Interactive
         }
 
         nextRotation += new Vector3(0f, rotations[rotationAmount], 0f);
-
+        
         StartCoroutine(RotateSelf());
     }
 
@@ -75,11 +64,6 @@ public class Rotatable : Interactive
     {
         HideInteractionFeedback();
 
-        if (m_CanBeBroken)
-        {
-            CheckStatus();
-        }
-
         while (IsRotating)
         {
             transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, nextRotation, m_RotationSpeed * Time.deltaTime);
@@ -88,34 +72,12 @@ public class Rotatable : Interactive
             {
                 IsRotating = false;
                 transform.eulerAngles = nextRotation;
+                m_InteractionGraphics.transform.eulerAngles = transform.eulerAngles;
 
                 yield break;
             }
 
             yield return new WaitForEndOfFrame();
-        }
-    }
-
-    protected virtual void CheckStatus()
-    {
-        if (Mathf.Approximately(nextRotation.y, 180f))
-        {
-            StateIsNormal = true;
-        }
-        else
-        {
-            StateIsNormal = false;
-        }
-
-        if (StateIsNormal)
-        {
-            m_NormalBox.SetActive(false);
-            m_BrokenBox.SetActive(true);
-        }
-        else
-        {
-            m_NormalBox.SetActive(true);
-            m_BrokenBox.SetActive(false);
         }
     }
 }
