@@ -24,11 +24,11 @@ public class RotatableWithAttachableClue : Rotatable
     {
         if (Mathf.Approximately(transform.eulerAngles.y, 180f) && m_HasLinkedClue)
         {
-            TO_REMOVE = true;
+            StateIsNormal = true;
         }
         else
         {
-            TO_REMOVE = false;   
+            StateIsNormal = false;   
         }
     }
 }

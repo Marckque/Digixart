@@ -17,9 +17,11 @@ public class Rotatable : Interactive
     public bool IsRotating { get; set; }
     public bool m_HasBeenRotatedOnce;
 
-    [Header("Linked to death zone"), SerializeField]
-    private bool m_IsBroken;
-    public bool TO_REMOVE { get; set; }
+    [Header("Broken"), SerializeField]
+    private bool m_CanBeBroken;
+    public bool StateIsNormal { get; set; }
+    [SerializeField, Range(0, 4), Tooltip("0: 0°          1: 90°          2: 180°          3: 270°          4: 360°")]
+    private int brokenRotationAmount = 2;
 
     [Header("Boxes"), SerializeField]
     private GameObject m_NormalBox;
@@ -73,7 +75,7 @@ public class Rotatable : Interactive
     {
         HideInteractionFeedback();
 
-        if (m_IsBroken)
+        if (m_CanBeBroken)
         {
             CheckStatus();
         }
@@ -98,14 +100,14 @@ public class Rotatable : Interactive
     {
         if (Mathf.Approximately(nextRotation.y, 180f))
         {
-            TO_REMOVE = true;
+            StateIsNormal = true;
         }
         else
         {
-            TO_REMOVE = false;
+            StateIsNormal = false;
         }
 
-        if (TO_REMOVE)
+        if (StateIsNormal)
         {
             m_NormalBox.SetActive(false);
             m_BrokenBox.SetActive(true);
