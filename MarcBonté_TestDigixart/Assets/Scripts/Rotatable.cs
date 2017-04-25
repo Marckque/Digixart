@@ -12,7 +12,7 @@ public class Rotatable : Interactive
     protected float m_RotationSpeed = 5f;
     [SerializeField, Range(0, 4), Tooltip("0: 0°          1: 90°          2: 180°          3: 270°          4: 360°")]
     protected int rotationAmount = 1;
-    protected float[] rotations = new float[5];
+    protected float[] m_Rotations = new float[5];
     protected Vector3 nextRotation;
     public bool IsRotating { get; set; }
     public bool m_RotateOnceOnStart;
@@ -29,9 +29,9 @@ public class Rotatable : Interactive
 
     private void InitialiseRotations()
     {
-        for (int i = 0; i < rotations.Length; ++i)
+        for (int i = 0; i < m_Rotations.Length; ++i)
         {
-            rotations[i] = Mathf.Round(90f * i);
+            m_Rotations[i] = Mathf.Round(90f * i);
         }
     }
     
@@ -45,7 +45,7 @@ public class Rotatable : Interactive
             nextRotation.y = 0f;
         }
 
-        nextRotation += new Vector3(0f, rotations[rotationAmount], 0f);
+        nextRotation += new Vector3(0f, m_Rotations[rotationAmount], 0f);
         
         StartCoroutine(RotateSelf());
     }
