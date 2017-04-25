@@ -17,7 +17,7 @@ public class Rotatable : Interactive
     public bool IsRotating { get; set; }
     public bool m_RotateOnceOnStart;
 
-    protected void Start()
+    protected virtual void Start()
     {
         InitialiseRotations();
 

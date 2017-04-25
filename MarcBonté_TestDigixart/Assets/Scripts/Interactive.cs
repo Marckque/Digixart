@@ -7,6 +7,11 @@ public class Interactive : MonoBehaviour
     [Header("Interactive")]
     public MeshRenderer m_InteractionGraphics;
 
+    protected void Awake()
+    {
+        m_InteractionGraphics.enabled = false;
+    }
+
     public virtual void PlayerInteracts()
     {
     }

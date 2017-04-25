@@ -44,7 +44,7 @@ public class CameraController : MonoBehaviour
         float dot = Vector3.Dot(positionTarget.forward.normalized, transform.forward.normalized);
         float multiplier = dot > dotAmount ? 1f : speedMultiplier;
         Vector3 finalPosition = positionTarget.position + cameraOffset;
-        //finalPosition.z = cameraOffset.z;
+        finalPosition.z = cameraOffset.z;
 
         transform.position = Vector3.Lerp(transform.position, finalPosition, (positionSpeed * multiplier) * Time.deltaTime);
     }

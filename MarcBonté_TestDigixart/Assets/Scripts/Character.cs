@@ -78,7 +78,13 @@ public class Character : MonoBehaviour
             foreach (Interactive interactive in m_Interactives)
             {
                 interactive.HideInteractionFeedback();
-                float distance = ((interactive.transform.position - transform.position) - (transform.forward * m_ForwardMultiplier)).sqrMagnitude;
+
+                Vector3 newInteractiveTransformPosition = interactive.transform.position;
+                newInteractiveTransformPosition.y = 0f;
+                Vector3 newTransformPosition = transform.position;
+                newTransformPosition.y = 0;
+
+                float distance = ((newInteractiveTransformPosition - newTransformPosition) - (transform.forward * m_ForwardMultiplier)).sqrMagnitude;
 
                 if (distance < closestInteractive)
                 {
