@@ -20,7 +20,7 @@ public class Character : MonoBehaviour
             Interact();
         }
 
-        if (Input.GetAxisRaw("A_1") == 0)//(Mathf.Approximately(Input.GetAxisRaw("A_1"), 0f))
+        if (Input.GetAxisRaw("A_1") == 0)
         {
             m_HasReleasedInteractButton = true;
         }
@@ -110,12 +110,6 @@ public class Character : MonoBehaviour
         if (interactive)
         {
             AddInteractive(interactive);
-        }
-
-        SimpleTeleporter teleporter = other.GetComponent<SimpleTeleporter>();
-        if (teleporter)
-        {
-            transform.position = teleporter.ArrivalPoint.position;
         }
     }
 
