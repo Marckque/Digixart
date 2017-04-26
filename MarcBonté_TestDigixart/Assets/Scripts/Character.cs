@@ -6,36 +6,23 @@ public class Character : MonoBehaviour
     private List<Interactive> m_Interactives = new List<Interactive>();
     public Interactive CurrentInteractive { get; private set; }
 
-    [SerializeField]
-    private float m_InteractionCooldownDuration = 1f;
     [SerializeField, Range(0f, 3f)]
     private float m_ForwardMultiplier = 1.25f;
-
-    private bool m_InteractionCooldown;
-    private float m_CooldownTime;
+    private bool m_HasReleasedInteractButton = true;
 
     protected void Update()
     {
         GetClosestInteractiveAmongInteractives();
 
-        if (m_InteractionCooldown)
+        if (m_HasReleasedInteractButton && (Input.GetAxisRaw("A_1") > 0f) || Input.GetKeyDown(KeyCode.A))
         {
-            if (Input.GetAxisRaw("A_1") > 0f || Input.GetKeyDown(KeyCode.A))
-            {
-                m_InteractionCooldown = false;
-                Interact();
-            }
-        } 
+            m_HasReleasedInteractButton = false;
+            Interact();
+        }
 
-        if (!m_InteractionCooldown)
+        if (Input.GetAxisRaw("A_1") == 0)//(Mathf.Approximately(Input.GetAxisRaw("A_1"), 0f))
         {
-            m_CooldownTime += Time.deltaTime;
-
-            if (m_CooldownTime > m_InteractionCooldownDuration)
-            {
-                m_CooldownTime = 0f;
-                m_InteractionCooldown = true;
-            }
+            m_HasReleasedInteractButton = true;
         }
     }
 

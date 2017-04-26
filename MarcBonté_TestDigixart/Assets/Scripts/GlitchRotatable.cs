@@ -19,7 +19,7 @@ public class GlitchRotatable : Rotatable
     protected override void Start()
     {
         base.Start();
-        DeactivateEntities();
+        DeactivateSecondSetOfEntities();
     }
 
     public override void PlayerInteracts()
@@ -41,30 +41,21 @@ public class GlitchRotatable : Rotatable
         }
     }
 
-    private void SwitchToGlitchState()
+    protected void SwitchToGlitchState()
     {
         m_NormalState.SetActive(false);
         m_GlitchState.SetActive(true);
 
-        ActivateEntities();      
+        ActivateFirstSetOfEntities();
+        DeactivateSecondSetOfEntities();
     }
 
-    private void SwitchToNormalState()
+    protected void SwitchToNormalState()
     {
         m_NormalState.SetActive(true);
         m_GlitchState.SetActive(false);
 
-        DeactivateEntities();
-    }
-
-    protected void OnDrawGizmos()
-    {
-        if (m_ActivatesEntities.Length > 0)
-        {
-            foreach (GameObject go in m_ActivatesEntities)
-            {
-                Gizmos.DrawLine(transform.position, go.transform.position);
-            }
-        }
+        DeactivateFirstSetOfEntities();
+        ActivateSecondSetOfEntities();
     }
 }
