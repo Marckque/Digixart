@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Interactive : MonoBehaviour
 {
-    [Header("Interactive")]
-    public MeshRenderer m_InteractionGraphics;
+    [Header("Interactive"), SerializeField]
+    protected MeshRenderer m_InteractionGraphics;
+    [SerializeField]
+    protected GameObject[] m_ActivatesEntities;
 
     protected void Awake()
     {
@@ -29,5 +31,27 @@ public class Interactive : MonoBehaviour
     public void HideInteractionFeedback()
     {
         m_InteractionGraphics.enabled = false;
+    }
+
+    protected void ActivateEntities()
+    {
+        if (m_ActivatesEntities.Length > 0)
+        {
+            foreach (GameObject go in m_ActivatesEntities)
+            {
+                go.SetActive(true);
+            }
+        }
+    }
+
+    protected void DeactivateEntities()
+    {
+        if (m_ActivatesEntities.Length > 0)
+        {
+            foreach (GameObject go in m_ActivatesEntities)
+            {
+                go.SetActive(false);
+            }
+        }
     }
 }

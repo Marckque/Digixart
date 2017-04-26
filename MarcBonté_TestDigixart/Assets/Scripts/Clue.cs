@@ -7,6 +7,13 @@ public class Clue : Interactive
     public override void PlayerInteracts()
     {
         base.PlayerInteracts();
-        print("You got a clue my friend.");
+
+        TurnOnClue();
+        ActivateEntities();
+    }
+
+    public void TurnOnClue()
+    {
+
     }
 }
