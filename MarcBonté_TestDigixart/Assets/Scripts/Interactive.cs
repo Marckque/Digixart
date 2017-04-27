@@ -4,12 +4,13 @@ using System.Collections.Generic;
 
 public class Interactive : MonoBehaviour
 {
-    [Header("Interactive"), SerializeField]
-    protected MeshRenderer m_InteractionGraphics;
-    [SerializeField]
+    [Header("Linked entities"), SerializeField]
     protected GameObject[] m_NormalEntities;
     [SerializeField]
     protected GameObject[] m_GlitchEntities;
+
+    [Header("Interactivity feedback"), SerializeField]
+    protected MeshRenderer m_InteractionGraphics;
 
     protected void Awake()
     {
@@ -110,7 +111,7 @@ public class Interactive : MonoBehaviour
         {
             foreach (GameObject go in m_GlitchEntities)
             {
-                
+                if (go)
                 Gizmos.DrawLine(transform.position, go.transform.position + Vector3.up * 0.25f);
             }
         }
@@ -120,7 +121,7 @@ public class Interactive : MonoBehaviour
         {
             foreach (GameObject go in m_NormalEntities)
             {
-                
+                if (go)
                 Gizmos.DrawLine(transform.position, go.transform.position);
             }
         }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class Clue : Interactive
 {
-    [SerializeField]
+    [Header("UI"), SerializeField]
     private GameObject UI;
 
     private bool m_CurrentMode = true;
