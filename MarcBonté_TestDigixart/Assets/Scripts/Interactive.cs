@@ -65,7 +65,7 @@ public class Interactive : MonoBehaviour
                 if (i)
                 {
                     i.DeactivateNormalEntities();
-                    i.transform.rotation = Quaternion.identity;
+                    //i.transform.rotation = Quaternion.identity;
                 }
 
                 go.SetActive(false);
@@ -83,7 +83,7 @@ public class Interactive : MonoBehaviour
                 if (i)
                 {
                     i.DeactivateGlitchEntities();
-                    i.transform.rotation = Quaternion.identity;
+                    //i.transform.rotation = Quaternion.identity;
                 }
 
                 go.SetActive(false);
@@ -93,14 +93,14 @@ public class Interactive : MonoBehaviour
 
     protected void UseNormalEntities()
     {
-        ActivateGlitchEntities();
-        DeactivateNormalEntities();
+        ActivateNormalEntities();
+        DeactivateGlitchEntities();
     }
 
     protected void UseGlitchEntities()
     {
-        DeactivateGlitchEntities();
-        ActivateNormalEntities();
+        ActivateGlitchEntities();
+        DeactivateNormalEntities();
     }
 
     // Debug purposes

@@ -20,6 +20,12 @@ public class GlitchRotatable : Rotatable
         CheckStatus();
     }
 
+    protected void OnEnable()
+    {
+        if (Time.time > 0.5f) CheckStatus();
+    }
+
+
     public override void PlayerInteracts()
     {
         base.PlayerInteracts();
@@ -30,23 +36,23 @@ public class GlitchRotatable : Rotatable
     {
         if (Mathf.Approximately(nextRotation.y, m_Rotations[m_GlitchRotation]))
         {
-            SwitchToGlitchState();
+            SwitchThisEntityToGlitchState();
             UseGlitchEntities();
         }
         else
         {
-            SwitchToNormalState();
+            SwitchThisEntityToNormalState();
             UseNormalEntities();
         }
     }
 
-    protected void SwitchToGlitchState()
+    protected void SwitchThisEntityToGlitchState()
     {
         m_NormalState.SetActive(false);
         m_GlitchState.SetActive(true);
     }
 
-    protected void SwitchToNormalState()
+    protected void SwitchThisEntityToNormalState()
     {
         m_NormalState.SetActive(true);
         m_GlitchState.SetActive(false);
