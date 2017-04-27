@@ -19,23 +19,33 @@ public class Rotatable : Interactive
 
     protected virtual void Start()
     {
-        InitialiseRotations();
+        InitialiseRotationsArray();
 
         if (m_RotateOnceOnStart)
         {
-            InitialiseRotation();
+            PrepareCurrentRotation();
         }
     }
 
-    private void InitialiseRotations()
+    private void InitialiseRotationsArray()
     {
         for (int i = 0; i < m_Rotations.Length; ++i)
         {
             m_Rotations[i] = Mathf.Round(90f * i);
         }
     }
-    
-    private void InitialiseRotation()
+
+    public override void PlayerInteracts()
+    {
+        base.PlayerInteracts();
+
+        if (!IsRotating)
+        {
+            PrepareCurrentRotation();
+        }
+    }
+
+    private void PrepareCurrentRotation()
     {
         IsRotating = true;
 
@@ -46,18 +56,8 @@ public class Rotatable : Interactive
         }
 
         nextRotation += new Vector3(0f, m_Rotations[rotationAmount], 0f);
-        
+
         StartCoroutine(RotateSelf());
-    }
-
-    public override void PlayerInteracts()
-    {
-        base.PlayerInteracts();
-
-        if (!IsRotating)
-        {
-            InitialiseRotation();
-        }
     }
 
     private IEnumerator RotateSelf()

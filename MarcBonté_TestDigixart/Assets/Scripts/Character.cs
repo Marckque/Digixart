@@ -36,12 +36,32 @@ public class Character : MonoBehaviour
         }
     }
 
+    // Manage interactions with interactive objects
     private void Interact()
     {
         if (CurrentInteractive)
         {
             SoundManagement();
             CurrentInteractive.PlayerInteracts();
+        }
+    }
+
+    protected void OnTriggerEnter(Collider other)
+    {
+        Interactive interactive = other.GetComponent<Interactive>();
+        if (interactive)
+        {
+            AddInteractive(interactive);
+        }
+    }
+
+    protected void OnTriggerExit(Collider other)
+    {
+        Interactive interactive = other.GetComponent<Interactive>();
+
+        if (interactive)
+        {
+            RemoveInteractive(interactive);
         }
     }
 
@@ -106,6 +126,7 @@ public class Character : MonoBehaviour
         }
     }
 
+    // Sound
     private void SoundManagement()
     {
         if (m_InteractionSoundIndex < m_InteractionAudioClips.Length - 1)
@@ -129,31 +150,13 @@ public class Character : MonoBehaviour
         }
     }
 
+    // Debug purposes
     private void OnDrawGizmos()
     {
         if (CurrentInteractive)
         {
             Gizmos.color = Color.green;
             Gizmos.DrawLine(transform.position, CurrentInteractive.transform.position);
-        }
-    }
-
-    protected void OnTriggerEnter(Collider other)
-    {
-        Interactive interactive = other.GetComponent<Interactive>();
-        if (interactive)
-        {
-            AddInteractive(interactive);
-        }
-    }
-
-    protected void OnTriggerExit(Collider other)
-    {
-        Interactive interactive = other.GetComponent<Interactive>();
-
-        if (interactive)
-        {
-            RemoveInteractive(interactive);
         }
     }
 }

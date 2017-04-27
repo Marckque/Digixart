@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class Interactive : MonoBehaviour
 {
@@ -16,30 +16,16 @@ public class Interactive : MonoBehaviour
     protected void Awake()
     {
         m_InteractionGraphics.enabled = false;
-        
-        /*
-        if (m_DeactivateOnStart.Length > 0)
-        {
-            foreach (GameObject go in m_DeactivateOnStart)
-            {
-                go.SetActive(false);
-            }
-        }
-        */
     }
 
     public virtual void PlayerInteracts()
     {
     }
 
+    // Visuals feedbacks for interaction
     public void DisplayInteractionFeedback()
     {
         m_InteractionGraphics.enabled = true;
-    }
-
-    public void DeactivateInteraction()
-    {
-        HideInteractionFeedback();
     }
 
     public void HideInteractionFeedback()
@@ -47,7 +33,8 @@ public class Interactive : MonoBehaviour
         m_InteractionGraphics.enabled = false;
     }
 
-    protected void ActivateFirstSetOfEntities()
+    // Activates/deactivates set of entities
+    protected void ActivateNormalEntities()
     {
         if (m_FirstSetOfEntities.Length > 0)
         {
@@ -58,7 +45,7 @@ public class Interactive : MonoBehaviour
         }
     }
 
-    protected void ActivateSecondSetOfEntities()
+    protected void ActivateGlitchEntities()
     {
         if (m_SecondSetOfEntities.Length > 0)
         {
@@ -69,28 +56,53 @@ public class Interactive : MonoBehaviour
         }
     }
 
-    protected void DeactivateFirstSetOfEntities()
+    protected void DeactivateNormalEntities()
     {
         if (m_FirstSetOfEntities.Length > 0)
         {
             foreach (GameObject go in m_FirstSetOfEntities)
             {
+                Interactive i = go.GetComponentInChildren<Interactive>();
+                if (i)
+                {
+                    i.DeactivateNormalEntities();
+                }
+
                 go.SetActive(false);
             }
         }
     }
 
-    protected void DeactivateSecondSetOfEntities()
+    protected void DeactivateGlitchEntities()
     {
         if (m_SecondSetOfEntities.Length > 0)
         {
             foreach (GameObject go in m_SecondSetOfEntities)
             {
+                Interactive i = go.GetComponentInChildren<Interactive>();
+                if (i)
+                {
+                    i.DeactivateGlitchEntities();
+                }
+
                 go.SetActive(false);
             }
         }
     }
 
+    protected void UseNormal()
+    {
+        ActivateNormalEntities();
+        DeactivateGlitchEntities();
+    }
+
+    protected void UseGlitch()
+    {
+        DeactivateNormalEntities();
+        ActivateGlitchEntities();
+    }
+
+    // Debug purposes
     protected virtual void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;

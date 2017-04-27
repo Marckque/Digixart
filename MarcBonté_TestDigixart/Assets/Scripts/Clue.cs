@@ -9,11 +9,6 @@ public class Clue : Interactive
 
     private bool m_CurrentMode = true;
 
-    protected void Start()
-    {
-        CheckSet();
-    }
-
     public override void PlayerInteracts()
     {
         base.PlayerInteracts();
@@ -26,12 +21,12 @@ public class Clue : Interactive
     {
         if (m_CurrentMode)
         {
-            FirstSet();
+            UseNormal();
             DeactivateUI();
         }
         else
         {
-            SecondSet();
+            UseGlitch();
             StartCoroutine(ActivateUI());
         }
     }
@@ -57,17 +52,5 @@ public class Clue : Interactive
             StopAllCoroutines();
             UI.SetActive(false);
         }
-    }
-
-    private void FirstSet()
-    {
-        ActivateFirstSetOfEntities();
-        DeactivateSecondSetOfEntities();
-    }
-
-    private void SecondSet()
-    {
-        DeactivateFirstSetOfEntities();
-        ActivateSecondSetOfEntities();
     }
 }
