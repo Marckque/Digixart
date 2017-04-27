@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityStandardAssets.Characters.ThirdPerson;
 
 [SelectionBase]
 public class GlitchRotatable : Rotatable
 {
+    #region Variables
     [Header("Glitch"), SerializeField, Range(0, 4), Tooltip("0: 0°          1: 90°          2: 180°          3: 270°          4: 360°")]
     private int m_GlitchRotation;
 
@@ -13,6 +13,7 @@ public class GlitchRotatable : Rotatable
     private GameObject m_NormalState;
     [SerializeField]
     private GameObject m_GlitchState;
+    #endregion Variables
 
     protected override void Start()
     {

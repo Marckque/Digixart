@@ -5,6 +5,7 @@ using System.Collections.Generic;
 [SelectionBase]
 public class Rotatable : Interactive
 {
+    #region Variables
     private const float ROTATION_LERP_OFFSET = 1f;
 
     [Header("Rotations"), SerializeField, Range(0f, 40f)]
@@ -17,6 +18,7 @@ public class Rotatable : Interactive
     protected float[] m_Rotations = new float[5];
     protected Vector3 nextRotation;
     public bool IsRotating { get; set; }
+    #endregion Variables
 
     // Start
     protected virtual void Start()

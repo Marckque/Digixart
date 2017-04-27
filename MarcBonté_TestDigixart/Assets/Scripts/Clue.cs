@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class Clue : Interactive
 {
+    #region Variables
     private const float UI_STAY_DURATION = 6f;
 
     [Header("UI"), SerializeField]
@@ -11,6 +12,7 @@ public class Clue : Interactive
 
     private bool m_CurrentMode = true;
     private bool m_Interacting;
+    #endregion Variables
 
     public override void PlayerInteracts()
     {

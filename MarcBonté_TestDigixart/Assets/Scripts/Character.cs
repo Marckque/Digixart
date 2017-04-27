@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class Character : MonoBehaviour
 {
+    #region Variables
     private List<Interactive> m_Interactives = new List<Interactive>();
     public Interactive CurrentInteractive { get; private set; }
 
@@ -10,10 +11,12 @@ public class Character : MonoBehaviour
     private float m_ForwardMultiplier = 1.25f;
     private bool m_HasReleasedInteractButton = true;
 
+    // Sound
     [SerializeField]
     private AudioClip[] m_InteractionAudioClips;
     private AudioSource m_AudioSource;
     private int m_InteractionSoundIndex;
+    #endregion Variables
 
     protected void Start()
     {

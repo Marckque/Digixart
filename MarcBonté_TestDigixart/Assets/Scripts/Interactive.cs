@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class Interactive : MonoBehaviour
 {
+    #region Variables
     [Header("Linked entities"), SerializeField]
     protected GameObject[] m_NormalEntities;
     [SerializeField]
@@ -11,7 +12,7 @@ public class Interactive : MonoBehaviour
 
     [Header("Interactivity feedback"), SerializeField]
     protected MeshRenderer m_InteractionGraphics;
-
+    #endregion Variables
     protected void Awake()
     {
         m_InteractionGraphics.enabled = false;
