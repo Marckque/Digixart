@@ -16,16 +16,6 @@ public class Interactive : MonoBehaviour
     protected void Awake()
     {
         m_InteractionGraphics.enabled = false;
-        
-        /*
-        if (m_DeactivateOnStart.Length > 0)
-        {
-            foreach (GameObject go in m_DeactivateOnStart)
-            {
-                go.SetActive(false);
-            }
-        }
-        */
     }
 
     public virtual void PlayerInteracts()
@@ -75,6 +65,12 @@ public class Interactive : MonoBehaviour
         {
             foreach (GameObject go in m_FirstSetOfEntities)
             {
+                Interactive interactive = go.GetComponentInChildren<Interactive>();
+                if (interactive)
+                {
+                    interactive.DeactivateFirstSetOfEntities();
+                }
+
                 go.SetActive(false);
             }
         }
@@ -86,6 +82,12 @@ public class Interactive : MonoBehaviour
         {
             foreach (GameObject go in m_SecondSetOfEntities)
             {
+                Interactive interactive = go.GetComponentInChildren<Interactive>();
+                if (interactive)
+                {
+                    interactive.DeactivateSecondSetOfEntities();
+                }
+
                 go.SetActive(false);
             }
         }
