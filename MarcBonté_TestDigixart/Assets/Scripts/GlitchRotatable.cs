@@ -8,6 +8,8 @@ public class GlitchRotatable : Rotatable
 {
     [Header("Glitch"), SerializeField, Range(0, 4), Tooltip("0: 0°          1: 90°          2: 180°          3: 270°          4: 360°")]
     private int m_GlitchRotation;
+    [SerializeField]
+    private int m_GlitchIndex;
 
     [Header("Entity state"), SerializeField]
     private GameObject m_NormalState;
@@ -17,12 +19,12 @@ public class GlitchRotatable : Rotatable
     protected override void Start()
     {
         base.Start();
-        //DeactivateSecondSetOfEntities();
+        DeactivateSecondSetOfEntities();
     }
 
     public override void PlayerInteracts()
     {
-        //CheckStatus();
+        CheckStatus();
         base.PlayerInteracts();
         CheckStatus();
     }
