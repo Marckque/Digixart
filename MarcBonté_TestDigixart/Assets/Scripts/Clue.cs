@@ -21,12 +21,12 @@ public class Clue : Interactive
     {
         if (m_CurrentMode)
         {
-            UseNormal();
+            UseNormalEntities();
             DeactivateUI();
         }
         else
         {
-            UseGlitch();
+            UseGlitchEntities();
             StartCoroutine(ActivateUI());
         }
     }

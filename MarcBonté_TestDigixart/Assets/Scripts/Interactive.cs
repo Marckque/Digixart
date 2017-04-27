@@ -7,11 +7,9 @@ public class Interactive : MonoBehaviour
     [Header("Interactive"), SerializeField]
     protected MeshRenderer m_InteractionGraphics;
     [SerializeField]
-    protected GameObject[] m_FirstSetOfEntities;
+    protected GameObject[] m_NormalEntities;
     [SerializeField]
-    protected GameObject[] m_SecondSetOfEntities;
-    [SerializeField]
-    protected GameObject[] m_DeactivateOnStart;
+    protected GameObject[] m_GlitchEntities;
 
     protected void Awake()
     {
@@ -36,9 +34,9 @@ public class Interactive : MonoBehaviour
     // Activates/deactivates set of entities
     protected void ActivateNormalEntities()
     {
-        if (m_FirstSetOfEntities.Length > 0)
+        if (m_NormalEntities.Length > 0)
         {
-            foreach (GameObject go in m_FirstSetOfEntities)
+            foreach (GameObject go in m_NormalEntities)
             {
                 go.SetActive(true);
             }
@@ -47,9 +45,9 @@ public class Interactive : MonoBehaviour
 
     protected void ActivateGlitchEntities()
     {
-        if (m_SecondSetOfEntities.Length > 0)
+        if (m_GlitchEntities.Length > 0)
         {
-            foreach (GameObject go in m_SecondSetOfEntities)
+            foreach (GameObject go in m_GlitchEntities)
             {
                 go.SetActive(true);
             }
@@ -58,14 +56,15 @@ public class Interactive : MonoBehaviour
 
     protected void DeactivateNormalEntities()
     {
-        if (m_FirstSetOfEntities.Length > 0)
+        if (m_NormalEntities.Length > 0)
         {
-            foreach (GameObject go in m_FirstSetOfEntities)
+            foreach (GameObject go in m_NormalEntities)
             {
                 Interactive i = go.GetComponentInChildren<Interactive>();
                 if (i)
                 {
                     i.DeactivateNormalEntities();
+                    i.transform.rotation = Quaternion.identity;
                 }
 
                 go.SetActive(false);
@@ -75,14 +74,15 @@ public class Interactive : MonoBehaviour
 
     protected void DeactivateGlitchEntities()
     {
-        if (m_SecondSetOfEntities.Length > 0)
+        if (m_GlitchEntities.Length > 0)
         {
-            foreach (GameObject go in m_SecondSetOfEntities)
+            foreach (GameObject go in m_GlitchEntities)
             {
                 Interactive i = go.GetComponentInChildren<Interactive>();
                 if (i)
                 {
                     i.DeactivateGlitchEntities();
+                    i.transform.rotation = Quaternion.identity;
                 }
 
                 go.SetActive(false);
@@ -90,25 +90,25 @@ public class Interactive : MonoBehaviour
         }
     }
 
-    protected void UseNormal()
+    protected void UseNormalEntities()
     {
-        ActivateNormalEntities();
-        DeactivateGlitchEntities();
+        ActivateGlitchEntities();
+        DeactivateNormalEntities();
     }
 
-    protected void UseGlitch()
+    protected void UseGlitchEntities()
     {
-        DeactivateNormalEntities();
-        ActivateGlitchEntities();
+        DeactivateGlitchEntities();
+        ActivateNormalEntities();
     }
 
     // Debug purposes
     protected virtual void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        if (m_FirstSetOfEntities.Length > 0)
+        if (m_GlitchEntities.Length > 0)
         {
-            foreach (GameObject go in m_FirstSetOfEntities)
+            foreach (GameObject go in m_GlitchEntities)
             {
                 
                 Gizmos.DrawLine(transform.position, go.transform.position + Vector3.up * 0.25f);
@@ -116,22 +116,12 @@ public class Interactive : MonoBehaviour
         }
 
         Gizmos.color = Color.white;
-        if (m_SecondSetOfEntities.Length > 0)
+        if (m_NormalEntities.Length > 0)
         {
-            foreach (GameObject go in m_SecondSetOfEntities)
+            foreach (GameObject go in m_NormalEntities)
             {
                 
                 Gizmos.DrawLine(transform.position, go.transform.position);
-            }
-        }
-
-        Gizmos.color = Color.red;
-        if (m_DeactivateOnStart.Length > 0)
-        {
-            foreach (GameObject go in m_DeactivateOnStart)
-            {
-                
-                Gizmos.DrawLine(transform.position, go.transform.position - Vector3.up * 0.25f);
             }
         }
     }

@@ -31,12 +31,12 @@ public class GlitchRotatable : Rotatable
         if (Mathf.Approximately(nextRotation.y, m_Rotations[m_GlitchRotation]))
         {
             SwitchToGlitchState();
-            UseGlitch();
+            UseGlitchEntities();
         }
         else
         {
             SwitchToNormalState();
-            UseNormal();
+            UseNormalEntities();
         }
     }
 
