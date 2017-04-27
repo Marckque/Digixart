@@ -8,28 +8,43 @@ public class Clue : Interactive
     private GameObject UI;
 
     private bool m_CurrentMode = true;
+    private bool m_Interacting;
 
     public override void PlayerInteracts()
     {
         base.PlayerInteracts();
 
+        m_Interacting = true;
         m_CurrentMode = !m_CurrentMode;
-        CheckSet();
+        CheckStatus();
     }
 
-    private void CheckSet()
+    protected override void CheckStatus()
     {
+        base.CheckStatus();
+
         if (m_CurrentMode)
         {
-            UseNormalEntities();
-            DeactivateUI();
+            UseNormalEntities();            
         }
         else
         {
             UseGlitchEntities();
+            
+        }
+
+        if (m_Interacting)
+        {
             StartCoroutine(ActivateUI());
         }
+        else
+        {
+            DeactivateUI();
+        }
+
+        m_Interacting = false;
     }
+    
 
     private IEnumerator ActivateUI()
     {

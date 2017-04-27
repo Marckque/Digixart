@@ -17,6 +17,14 @@ public class Interactive : MonoBehaviour
         m_InteractionGraphics.enabled = false;
     }
 
+    protected void OnEnable()
+    {
+        if (Time.time > 1f)
+        {
+            CheckStatus();
+        }
+    }
+
     public virtual void PlayerInteracts()
     {
     }
@@ -65,7 +73,6 @@ public class Interactive : MonoBehaviour
                 if (i)
                 {
                     i.DeactivateNormalEntities();
-                    //i.transform.rotation = Quaternion.identity;
                 }
 
                 go.SetActive(false);
@@ -83,7 +90,6 @@ public class Interactive : MonoBehaviour
                 if (i)
                 {
                     i.DeactivateGlitchEntities();
-                    //i.transform.rotation = Quaternion.identity;
                 }
 
                 go.SetActive(false);
@@ -101,6 +107,10 @@ public class Interactive : MonoBehaviour
     {
         ActivateGlitchEntities();
         DeactivateNormalEntities();
+    }
+
+    protected virtual void CheckStatus()
+    {
     }
 
     // Debug purposes

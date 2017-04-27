@@ -20,20 +20,16 @@ public class GlitchRotatable : Rotatable
         CheckStatus();
     }
 
-    protected void OnEnable()
-    {
-        if (Time.time > 0.5f) CheckStatus();
-    }
-
-
     public override void PlayerInteracts()
     {
         base.PlayerInteracts();
         CheckStatus();
     }
 
-    protected void CheckStatus()
+    protected override void CheckStatus()
     {
+        base.CheckStatus();
+
         if (Mathf.Approximately(nextRotation.y, m_Rotations[m_GlitchRotation]))
         {
             SwitchThisEntityToGlitchState();
