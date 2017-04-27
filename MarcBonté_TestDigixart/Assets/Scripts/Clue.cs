@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class Clue : Interactive
 {
+    private const float UI_STAY_DURATION = 6f;
+
     [Header("UI"), SerializeField]
     private GameObject UI;
 
@@ -51,7 +53,7 @@ public class Clue : Interactive
         if (UI && Time.time > 0.5f)
         {
             UI.SetActive(true);
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(UI_STAY_DURATION);
             UI.SetActive(false);
         }
         else
