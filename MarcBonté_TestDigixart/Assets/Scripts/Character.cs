@@ -10,6 +10,16 @@ public class Character : MonoBehaviour
     private float m_ForwardMultiplier = 1.25f;
     private bool m_HasReleasedInteractButton = true;
 
+    [SerializeField]
+    private AudioClip[] m_InteractionAudioClips;
+    private AudioSource m_AudioSource;
+    private int m_InteractionSoundIndex;
+
+    protected void Start()
+    {
+        m_AudioSource = GetComponent<AudioSource>();
+    }
+
     protected void Update()
     {
         GetClosestInteractiveAmongInteractives();
@@ -30,6 +40,7 @@ public class Character : MonoBehaviour
     {
         if (CurrentInteractive)
         {
+            SoundManagement();
             CurrentInteractive.PlayerInteracts();
         }
     }
@@ -92,6 +103,29 @@ public class Character : MonoBehaviour
             {
                 CurrentInteractive.DisplayInteractionFeedback();
             }
+        }
+    }
+
+    private void SoundManagement()
+    {
+        if (m_InteractionSoundIndex < m_InteractionAudioClips.Length - 1)
+        {
+            m_InteractionSoundIndex++;
+        }
+        else
+        {
+            m_InteractionSoundIndex = 0;
+        }
+
+        m_AudioSource.clip = m_InteractionAudioClips[m_InteractionSoundIndex];
+
+        // As I only made one sound for it, I change the pitch. But, it would be nicer to have proper clips. Else, the array is pretty useless.
+        int multiplier = m_InteractionSoundIndex + 1;
+        m_AudioSource.pitch = multiplier * 0.33f; 
+
+        if (!m_AudioSource.isPlaying)
+        {
+            m_AudioSource.Play();
         }
     }
 
