@@ -17,6 +17,7 @@ public class GlitchRotatable : Rotatable
     protected override void Start()
     {
         base.Start();
+        CheckStatus();
     }
 
     public override void PlayerInteracts()
@@ -30,10 +31,12 @@ public class GlitchRotatable : Rotatable
         if (Mathf.Approximately(nextRotation.y, m_Rotations[m_GlitchRotation]))
         {
             SwitchToGlitchState();
+            UseGlitch();
         }
         else
         {
             SwitchToNormalState();
+            UseNormal();
         }
     }
 
@@ -47,8 +50,5 @@ public class GlitchRotatable : Rotatable
     {
         m_NormalState.SetActive(true);
         m_GlitchState.SetActive(false);
-
-        DeactivateNormalEntities();
-        ActivateGlitchEntities();
     }
 }

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityStandardAssets.Characters.ThirdPerson;
 
 [SelectionBase]
 public class Rotatable : Interactive
@@ -12,11 +11,14 @@ public class Rotatable : Interactive
     protected float m_RotationSpeed = 5f;
     [SerializeField, Range(0, 4), Tooltip("0: 0°          1: 90°          2: 180°          3: 270°          4: 360°")]
     protected int rotationAmount = 1;
+    [SerializeField]
+    protected bool m_RotateOnceOnStart;
+
     protected float[] m_Rotations = new float[5];
     protected Vector3 nextRotation;
     public bool IsRotating { get; set; }
-    public bool m_RotateOnceOnStart;
 
+    // Start
     protected virtual void Start()
     {
         InitialiseRotationsArray();
@@ -35,6 +37,7 @@ public class Rotatable : Interactive
         }
     }
 
+    // Override of parent function (required)
     public override void PlayerInteracts()
     {
         base.PlayerInteracts();
@@ -45,6 +48,7 @@ public class Rotatable : Interactive
         }
     }
 
+    // Rotate the rotatable
     private void PrepareCurrentRotation()
     {
         IsRotating = true;
